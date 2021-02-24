@@ -13,7 +13,7 @@ cur = conn.cursor(cursor_factory=RealDictCursor)
 
 @app.route('/owners', methods=['GET'])
 def fetchOwners():
-    cur.execute('SELECT * FROM owners')
+    cur.execute('SELECT "owners".id, "name", COUNT(pets.id) AS "total_pets" FROM "owners" JOIN pets ON pets.owner_id = "owners".id GROUP BY "owners".id, "name"')
     return jsonify(cur.fetchall())
 
 @app.route('/owners', methods=['POST'])
