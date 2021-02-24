@@ -37,13 +37,12 @@ def addOwner():
             conn.close()
             print("PostgreSQL connection is closed")
 
-@app.route('/owners', methods=['DELETE'])
-def deleteOwner():
-    owner_id = request.form['id']
+@app.route('/owners/<owner_id>', methods=['DELETE'])
+def deleteOwner(owner_id):
 
     try:
         query = 'DELETE FROM "owners" WHERE id = %s'
-        cur.execute(query, (owner_id))
+        cur.execute(query, (owner_id,))
         conn.commit()
         result = {'status': 'OK'}
         return make_response(jsonify(result), 201)
@@ -110,9 +109,9 @@ def editCheckIn():
             conn.close()
             print("PostgreSQL connection is closed")
 
-@app.route('/pets', methods=['DELETE'])
-def deletePet():
-    pet_id = request.form['id']
+@app.route('/pets/<pet_id>', methods=['DELETE'])
+def deletePet(pet_id):
+    
 
     try:
         query = 'DELETE FROM pets WHERE "id" = %s'
