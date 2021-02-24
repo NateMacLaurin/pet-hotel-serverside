@@ -72,7 +72,7 @@ def deletePet():
     pet_id = request.form['id']
 
     try:
-        query: 'DELETE FROM pets WHERE "id" = %s'
+        query = 'DELETE FROM pets WHERE "id" = %s'
         cur.execute(query, (pet_id))
         conn.commit()
         result = {'status': 'OK'}
