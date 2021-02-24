@@ -31,11 +31,6 @@ def addOwner():
             print('Failed to add owner', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
-    finally:
-        if(conn):
-            cur.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 @app.route('/owners/<owner_id>', methods=['DELETE'])
 def deleteOwner(owner_id):
@@ -51,11 +46,6 @@ def deleteOwner(owner_id):
             print('Failed to delete owner', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
-    finally:
-        if(conn):
-            cur.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 @app.route('/pets', methods=['GET'])
 def fetchPets() :
@@ -81,11 +71,7 @@ def addPet() :
             print('Failled to add pet', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
-    finally:
-        if(conn):
-            cur.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
+
 
 @app.route('/pets', methods=['PUT'])
 def editCheckIn():
@@ -103,11 +89,7 @@ def editCheckIn():
             print('Failled to edit pet', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
-    finally:
-        if(conn):
-            cur.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
+
 
 @app.route('/pets/<pet_id>', methods=['DELETE'])
 def deletePet(pet_id):
@@ -124,11 +106,6 @@ def deletePet(pet_id):
             print('Failled to delete pet', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
-    finally:
-        if(conn):
-            cur.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 
 if __name__ == "__main__" :

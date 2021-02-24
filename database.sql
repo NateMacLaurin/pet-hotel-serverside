@@ -12,7 +12,7 @@ CREATE TABLE pets (
     "color" VARCHAR(80) NOT NULL,
     "checked_in" BOOLEAN default FALSE,
     "checked_in_date" DATE,
-    "owner_id" INT references "owners"
+    "owner_id" INT references "owners" ON DELETE CASCADE NOT NULL
 );
 
 INSERT INTO "owners" ("name")
