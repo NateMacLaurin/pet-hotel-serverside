@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request, jsonify, make_response
+from psycopg2.extras import RealDictCursor
 import flask
 import psycopg2
 
