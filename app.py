@@ -11,9 +11,30 @@ conn = psycopg2.connect("dbname=pet_pie_hotel")
 cur = conn.cursor()
 
 @app.route('/owners', methods=['GET'])
-def dbtest():
+def fetchOwners():
     cur.execute('SELECT * FROM owners')
     return jsonify(cur.fetchall())
+
+@app.route('/owners', methods=['POST'])
+def addOwner():
+    name = request.form['name']
+    
+    try:
+        query = 'INSERT INTO "owners" ("name") VALUES ( %s )'
+        cur.execute(query, (name,))
+        conn.commit()
+        result = {'status': 'CREATED'}
+        return make_response(jsonify(result), 201)
+    except (Exception, psycopg2.Error) as error:
+        if(conn):
+            print('Failed to add owner', error)
+            result = {'status': 'ERROR'}
+            return make_response(jsonify(result), 500)
+    finally:
+        if(conn):
+            cur.close()
+            conn.close()
+            print("PostgreSQL connection is closed")
 
 @app.route('/pets', methods=['GET'])
 def fetchPets() :
@@ -79,7 +100,7 @@ def deletePet():
         return make_response(jsonify(result), 200)
     except (Exception, psycopg2.Error) as error:
         if(conn):
-            print('Failled to edit pet', error)
+            print('Failled to delete pet', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
     finally:
