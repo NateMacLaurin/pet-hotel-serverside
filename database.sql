@@ -18,7 +18,7 @@ CREATE TABLE pets (
 INSERT INTO "owners" ("name")
 VALUES ('Gimli'), ('Gandalf'), ('Frodo'), ('Sam');
 
-INSERT INTO "pets" ("pet", "breed", "color", "owner_id", "checked_in_date")
+INSERT INTO "pets" ("pet", "breed", "color", "owner_id")
 VALUES ('Bones', 'Cat', 'White', '2'), ('Chonk', 'Cat', 'Brown', '2'), ('GoodBoi', 'Doge', 'Black', '3'), ('GoodLawd', 'Snake', 'Green', '4')
 
 UPDATE "pets" SET "checked_in" = TRUE, "checked_in_date" = '2021-02-21'

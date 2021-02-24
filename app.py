@@ -10,7 +10,7 @@ conn = psycopg2.connect("dbname=pet_pie_hotel")
 
 cur = conn.cursor()
 
-@app.route('/', methods=['GET'])
+@app.route('/owners', methods=['GET'])
 def dbtest():
     cur.execute('SELECT * FROM owners')
     return jsonify(cur.fetchall())
@@ -21,7 +21,7 @@ def fetchPets() :
     allPets = cur.fetchall()
     return jsonify(allPets)
 
-@app.route('/pets/add', methods=['POST'])
+@app.route('/pets', methods=['POST'])
 def addPet() :
     pet = request.form['pet']
     breed = request.form['breed']
@@ -45,7 +45,7 @@ def addPet() :
             conn.close()
             print("PostgreSQL connection is closed")
 
-@app.route('/pets/edit', methods=['PUT'])
+@app.route('/pets', methods=['PUT'])
 def editCheckIn():
     pet_id = request.form['id']
     checked_in = request.form['checked_in']
@@ -67,6 +67,26 @@ def editCheckIn():
             conn.close()
             print("PostgreSQL connection is closed")
 
+@app.route('/pets', methods=['DELETE'])
+def deletePet():
+    pet_id = request.form['id']
+
+    try:
+        query: 'DELETE FROM pets WHERE "id" = %s'
+        cur.execute(query, (pet_id))
+        conn.commit()
+        result = {'status': 'OK'}
+        return make_response(jsonify(result), 200)
+    except (Exception, psycopg2.Error) as error:
+        if(conn):
+            print('Failled to edit pet', error)
+            result = {'status': 'ERROR'}
+            return make_response(jsonify(result), 500)
+    finally:
+        if(conn):
+            cur.close()
+            conn.close()
+            print("PostgreSQL connection is closed")
 
 
 if __name__ == "__main__" :
