@@ -8,7 +8,7 @@ app = flask.Flask(__name__)
 
 conn = psycopg2.connect("dbname=pet_pie_hotel")
 
-cur = conn.cursor()
+cur = conn.cursor(cursor_factory=RealDictCursor)
 
 @app.route('/owners', methods=['GET'])
 def fetchOwners():
@@ -28,6 +28,27 @@ def addOwner():
     except (Exception, psycopg2.Error) as error:
         if(conn):
             print('Failed to add owner', error)
+            result = {'status': 'ERROR'}
+            return make_response(jsonify(result), 500)
+    finally:
+        if(conn):
+            cur.close()
+            conn.close()
+            print("PostgreSQL connection is closed")
+
+@app.route('/owners', methods=['DELETE'])
+def deleteOwner():
+    owner_id = request.form['id']
+
+    try:
+        query = 'DELETE FROM "owners" WHERE id = %s'
+        cur.execute(query, (owner_id))
+        conn.commit()
+        result = {'status': 'OK'}
+        return make_response(jsonify(result), 201)
+    except (Exception, psycopg2.Error) as error:
+        if(conn):
+            print('Failed to delete owner', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
     finally:
