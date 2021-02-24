@@ -16,4 +16,10 @@ CREATE TABLE pets (
 );
 
 INSERT INTO "owners" ("name")
-VALUES ('testUser');
+VALUES ('Gimli'), ('Gandalf'), ('Frodo'), ('Sam');
+
+INSERT INTO "pets" ("pet", "breed", "color", "owner_id", "checked_in_date")
+VALUES ('Bones', 'Cat', 'White', '2'), ('Chonk', 'Cat', 'Brown', '2'), ('GoodBoi', 'Doge', 'Black', '3'), ('GoodLawd', 'Snake', 'Green', '4')
+
+UPDATE "pets" SET "checked_in" = TRUE, "checked_in_date" = '2021-02-21'
+WHERE "id" = 2
