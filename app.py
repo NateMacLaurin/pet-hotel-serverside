@@ -86,7 +86,7 @@ def editCheckIn():
     pet_id = request.get_json()['id']
     try:
         query = 'UPDATE "pets" SET "checked_in" = TRUE, "checked_in_date" = current_timestamp WHERE "id" = %s'
-        cur.execute(query, (checked_in, checked_in_date, pet_id))
+        cur.execute(query, (pet_id,))
         conn.commit()
         result = {'status': 'OK'}
         return make_response(jsonify(result), 200)
