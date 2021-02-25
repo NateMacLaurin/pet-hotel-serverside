@@ -25,7 +25,8 @@ def fetchOwners():
 
 @app.route('/owners/add', methods=['POST'])
 def addOwner():
-    name = request.form['name']
+    print(request.form)
+    name = request.get_json()['name']
     print(name)
     try:
         query = 'INSERT INTO "owners" ("name") VALUES ( %s )'
@@ -62,10 +63,10 @@ def fetchPets() :
 
 @app.route('/pets', methods=['POST'])
 def addPet() :
-    pet = request.form['pet']
-    breed = request.form['breed']
-    color = request.form['color']
-    owner_id = request.form['owner_id']
+    pet = request.get_json()['pet']
+    breed = request.get_json()['breed']
+    color = request.get_json()['color']
+    owner_id = request.get_json()['owner_id']
 
     try:
         query = 'INSERT INTO "pets" ("pet", "breed", "color", "owner_id") VALUES (%s, %s, %s, %s)'
@@ -82,9 +83,9 @@ def addPet() :
 
 @app.route('/pets', methods=['PUT'])
 def editCheckIn():
-    pet_id = request.form['id']
-    checked_in = request.form['checked_in']
-    checked_in_date = request.form['checked_in_date']
+    pet_id = request.get_json()['id']
+    checked_in = request.get_json()['checked_in']
+    checked_in_date = request.get_json()['checked_in_date']
     try:
         query = 'UPDATE "pets" SET "checked_in" = %s, "checked_in_date" = %s WHERE "id" = %s'
         cur.execute(query, (checked_in, checked_in_date, pet_id))
