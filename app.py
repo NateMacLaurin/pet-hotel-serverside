@@ -92,10 +92,24 @@ def editCheckIn():
         return make_response(jsonify(result), 200)
     except (Exception, psycopg2.Error) as error:
         if(conn):
-            print('Failled to edit pet', error)
+            print('Failled to check in pet', error)
             result = {'status': 'ERROR'}
             return make_response(jsonify(result), 500)
 
+@app.route('/pets/checkOut/<pet_id>', methods=['PUT'])
+def checkOut(pet_id):
+    try:
+        query = 'UPDATE "pets" SET "checked_in" = FALSE WHERE "id" = %s'
+        cur.execute(query, (pet_id,))
+        conn.commit()
+        result = {'status': 'OK'}
+        return make_response(jsonify(result), 200)
+    except (Exception, psycopg2.Error) as error:
+        if(conn):
+            print('Failled to check out pet', error)
+            result = {'status': 'ERROR'}
+            return make_response(jsonify(result), 500)
+    
 
 @app.route('/pets/<pet_id>', methods=['DELETE'])
 def deletePet(pet_id):
