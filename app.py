@@ -13,13 +13,20 @@ cur = conn.cursor(cursor_factory=RealDictCursor)
 
 @app.route('/owners', methods=['GET'])
 def fetchOwners():
-    cur.execute('SELECT "owners".id, "name", COUNT(pets.id) AS "total_pets" FROM "owners" LEFT JOIN pets ON pets.owner_id = "owners".id GROUP BY "owners".id, "name"')
-    return jsonify(cur.fetchall())
+    try:
+        cur.execute('SELECT "owners".id, "name", COUNT(pets.id) AS "total_pets" FROM "owners" LEFT JOIN pets ON pets.owner_id = "owners".id GROUP BY "owners".id, "name"')
+        return jsonify(cur.fetchall())
+    except (Exception, psycopg2.Error) as error:
+        if(conn):
+            print('Failed to fetch owners', error)
+            result = {'status': 'ERROR'}
+            return make_response(jsonify(result), 500)
 
-@app.route('/owners', methods=['POST'])
+
+@app.route('/owners/add', methods=['POST'])
 def addOwner():
     name = request.form['name']
-    
+    print(name)
     try:
         query = 'INSERT INTO "owners" ("name") VALUES ( %s )'
         cur.execute(query, (name,))
