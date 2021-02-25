@@ -84,10 +84,8 @@ def addPet() :
 @app.route('/pets', methods=['PUT'])
 def editCheckIn():
     pet_id = request.get_json()['id']
-    checked_in = request.get_json()['checked_in']
-    checked_in_date = request.get_json()['checked_in_date']
     try:
-        query = 'UPDATE "pets" SET "checked_in" = %s, "checked_in_date" = %s WHERE "id" = %s'
+        query = 'UPDATE "pets" SET "checked_in" = TRUE, "checked_in_date" = current_timestamp WHERE "id" = %s'
         cur.execute(query, (checked_in, checked_in_date, pet_id))
         conn.commit()
         result = {'status': 'OK'}
